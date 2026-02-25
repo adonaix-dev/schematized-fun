@@ -11,6 +11,8 @@ export default defineConfig({
         },
     },
     outputOptions: {
-        comments: false,
+        comments: {
+            jsdoc: false,
+        },
     },
 });
