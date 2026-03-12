@@ -5,17 +5,18 @@ import type { SchematizedArgsDefinition } from "~/Types/Definition/SchematizedAr
 import type { SchematizedOutputArgs } from "~/Types/Function/SchematizedOutputArgs";
 
 class SchematizedTuple<Args extends SchematizedArgsDefinition> {
-    private readonly schemas: readonly StdSchemaV1[];
-    private readonly restSchema: StdSchemaV1 | false;
-    private readonly fixed: number;
+    private readonly fixedArgs: readonly StdSchemaV1[];
+    private readonly fixedArgsCount: number;
+
+    private readonly restArgs: StdSchemaV1 | false;
 
     constructor(args: Args) {
         const last = args.at(-1) as StdSchemaV1 | readonly [StdSchemaV1];
-        const restSchema = Array.isArray(last);
+        const restArgs = Array.isArray(last);
 
-        this.restSchema = restSchema && last[0];
-        this.fixed = (this.schemas = (
-            restSchema ? args.slice(0, -1) : args
+        this.restArgs = restArgs && last[0];
+        this.fixedArgsCount = (this.fixedArgs = (
+            restArgs ? args.slice(0, -1) : args
         ) as any).length;
     }
 
@@ -44,22 +45,27 @@ class SchematizedTuple<Args extends SchematizedArgsDefinition> {
     }
 
     validate(args: any[]): MaybePromise<StdSchemaV1.Result<SchematizedOutputArgs<Args>>> {
-        const results: MaybePromise<StdSchemaV1.Result<any>>[] = new Array(this.fixed);
+        const results: MaybePromise<StdSchemaV1.Result<any>>[] = new Array(
+            this.restArgs
+                ? Math.max(args.length, this.fixedArgsCount)
+                : this.fixedArgsCount,
+        );
+
         let isAsync = false;
 
-        for (let i = 0; i < this.fixed; i++) {
-            const result = this.schemas[i]!["~standard"].validate(args[i]);
+        for (let i = 0; i < this.fixedArgsCount; i++) {
+            const result = this.fixedArgs[i]!["~standard"].validate(args[i]);
 
             isAsync ||= result instanceof Promise;
             results[i] = result;
         }
 
-        if (this.restSchema && args.length > this.fixed) {
-            for (let i = this.fixed; i < args.length; i++) {
-                const result = this.restSchema["~standard"].validate(args[i]);
+        if (this.restArgs && args.length > this.fixedArgsCount) {
+            for (let i = this.fixedArgsCount; i < args.length; i++) {
+                const result = this.restArgs["~standard"].validate(args[i]);
 
                 isAsync ||= result instanceof Promise;
-                results.push(result);
+                results[i] = result;
             }
         }
 
