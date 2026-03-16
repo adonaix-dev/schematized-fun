@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "schematized-fn",
+      "name": "schematized-fun",
       "dependencies": {
         "@standard-schema/spec": "^1.1.0",
         "type-fest": "^5.4.4",

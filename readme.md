@@ -1,10 +1,10 @@
-# Schematized-Fn
+# schematized-fun
 
 Bring strict types to runtime! Define complex function signatures and overloads using any Standard Schema library and enjoy full TypeScript inference.
 
 ---
 
-[![NPM version](https://img.shields.io/npm/v/safe-context.svg?logo=npm&logoColor=red&color=red&label=NPM)](https://www.npmjs.com/package/schematized-fn)
+[![NPM version](https://img.shields.io/npm/v/safe-context.svg?logo=npm&logoColor=red&color=red&label=NPM)](https://www.npmjs.com/package/schematized-fun)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?logo=github)](https://opensource.org/licenses/MIT)
 
 ## Motivation
@@ -17,16 +17,16 @@ This package addresses these challenges by using Standard Schema V1 definitions.
 
 ```bash
 # npm
-npm install schematized-fn
+npm install schematized-fun
 
 # bun
-bun add schematized-fn
+bun add schematized-fun
 
 # yarn
-yarn add schematized-fn
+yarn add schematized-fun
 
 # pnpm
-pnpm add schematized-fn
+pnpm add schematized-fun
 ```
 
 ## Reference Documentation
@@ -280,7 +280,7 @@ A utility class for validating a list of arguments against a defined tuple of St
 
 ### `SchematizedError`
 
-Base error class for all errors thrown by `schematized-fn` package.
+Base error class for all errors thrown by `schematized-fun` package.
 
 ### `ArgumentsError`
 

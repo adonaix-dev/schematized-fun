@@ -1,11 +1,11 @@
 {
-    "name": "schematized-fn",
+    "name": "schematized-fun",
     "version": "0.1.0",
     "type": "module",
     "description": "Bring strict types to runtime! Define complex function signatures and overloads using any Standard Schema library and enjoy full TypeScript inference.",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/adonaix-dev/schematized-fn.git"
+        "url": "git+https://github.com/adonaix-dev/schematized-fun.git"
     },
     "author": "Arthur Adonai <>",
     "license": "MIT",
