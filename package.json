@@ -40,6 +40,7 @@
     },
     "devDependencies": {
         "@adonaix/types": "link:@adonaix/types",
+        "@changesets/cli": "^2.30.0",
         "@types/bun": "^1.3.10",
         "adonaix-lib": "link:adonaix-lib",
         "prettier": "^3.8.1",
