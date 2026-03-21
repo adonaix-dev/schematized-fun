@@ -99,14 +99,17 @@ class SchematizedOverloads<
         thisArg: ThisArg<This>,
         args: As,
     ): SchematizedOverloadedReturn<Overloads, As> {
-        const failures: (ArgumentsError | SynchronousValidationError)[] = [];
+        const failures: (ArgumentsError | SynchronousValidationError)[] = new Array(
+            this.#branches.length,
+        );
 
-        for (const { schema, implementation } of this.#branches) {
+        for (let i = 0; i < this.#branches.length; i++) {
+            const { schema, implementation } = this.#branches[i]!;
             const result = schema.validate(args);
 
             if (result instanceof Promise)
                 failures.push(new SynchronousValidationError());
-            else if (result.issues) failures.push(new ArgumentsError(result.issues));
+            else if (result.issues) failures[i] = new ArgumentsError(result.issues);
             else {
                 return Reflect.apply(implementation, thisArg, result.value);
             }
@@ -131,12 +134,13 @@ class SchematizedOverloads<
         thisArg: ThisArg<This>,
         args: As,
     ): Promise<Awaited<SchematizedOverloadedReturn<Overloads, As>>> {
-        const failures: ArgumentsError[] = [];
+        const failures: ArgumentsError[] = new Array(this.#branches.length);
 
-        for (const { schema, implementation } of this.#branches) {
+        for (let i = 0; i < this.#branches.length; i++) {
+            const { schema, implementation } = this.#branches[i]!;
             const result = await schema.validate(args);
 
-            if (result.issues) failures.push(new ArgumentsError(result.issues));
+            if (result.issues) failures[i] = new ArgumentsError(result.issues);
             else {
                 return await Reflect.apply(implementation, thisArg, result.value);
             }
